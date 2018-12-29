@@ -47,7 +47,8 @@ def define_performance(num_parallel_calls=True, inter_op=True, intra_op=True,
                        synthetic_data=True, max_train_steps=True, dtype=True,
                        all_reduce_alg=True, tf_gpu_thread_mode=False,
                        datasets_num_private_threads=False,
-                       datasets_num_parallel_batches=False):
+                       datasets_num_parallel_batches=False,
+                       distributed_training_with_horovod=False):
   """Register flags for specifying performance tuning arguments.
 
   Args:
@@ -167,6 +168,15 @@ def define_performance(num_parallel_calls=True, inter_op=True, intra_op=True,
         help=help_wrap(
             "Determines how many batches to process in parallel when using "
             "map and batch from tf.data.")
+    )
+
+  if distributed_training_with_horovod:
+    flags.DEFINE_bool(
+        name="distributed_training_with_horovod",
+        default=None,
+        help=help_wrap(
+            "Enables multi-node training synchronizing gradients "
+            "with Horovod/MPI")
     )
 
   return key_flags
